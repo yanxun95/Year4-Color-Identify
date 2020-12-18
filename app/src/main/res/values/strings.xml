@@ -3,4 +3,5 @@
     <string name="menu_name">Name</string>
     <string name="btm_retake_picture">Retake Picture</string>
     <string name="btn_check_color">Check Color</string>
+    <string name="btn_gallery">Gallery</string>
 </resources>

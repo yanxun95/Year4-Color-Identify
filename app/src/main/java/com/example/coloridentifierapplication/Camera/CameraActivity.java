@@ -37,7 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CameraActivity extends AppCompatActivity {
-    public static final int CAMERA_PERM_CODE = 101;
+    public static final int CAMERA_PERMISSION_CODE = 101;
     public static final int CAMERA_REQUEST_CODE = 102;
     public static final int GALLERY_REQUEST_CODE = 105;
     String currentPhotoPath;
@@ -68,19 +68,29 @@ public class CameraActivity extends AppCompatActivity {
     public void btnCheckColor(View view) {
     }
 
-    private void askCameraPermissions() {
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
-        }else {
-            //Toast.makeText(this, "Try to take picture.", Toast.LENGTH_SHORT).show();
+//    private void askCameraPermissions() {
+//        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+//            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+//        }else {
+//            //Toast.makeText(this, "Try to take picture.", Toast.LENGTH_SHORT).show();
+//            dispatchTakePictureIntent();
+//        }
+//
+//    }
+
+    public void askCameraPermissions(){
+        if(checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED){
+            //permission is not granted, request it
+            String[] permission = {Manifest.permission.CAMERA};
+            requestPermissions(permission, CAMERA_PERMISSION_CODE);
+        }else{
+            //permission already granted
             dispatchTakePictureIntent();
         }
-
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == CAMERA_PERM_CODE){
+        if(requestCode == CAMERA_PERMISSION_CODE){
             if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 //Toast.makeText(this, "try to run camera.", Toast.LENGTH_SHORT).show();
                 dispatchTakePictureIntent();

@@ -22,14 +22,13 @@ import android.widget.Toast;
 import com.example.coloridentifierapplication.Camera.CheckColorName;
 import com.example.coloridentifierapplication.R;
 
-import org.w3c.dom.Text;
 
 public class ColorIdentity extends AppCompatActivity {
 
     public static final int IMAGE_PICK_CODE = 101;
     public static final int STORAGE_PERMISSION_CODE = 102;
 
-    ImageView images;
+    ImageView images, colorPointer;
     TextView colorValuesDisplay, colorNameDisplay;
     View showColor;
     Button loadImages;
@@ -41,6 +40,7 @@ public class ColorIdentity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_color_identity);
         images = findViewById(R.id.colorPicker);
+        colorPointer = findViewById(R.id.colorPointer);
         colorValuesDisplay = findViewById(R.id.displayColorValues);
         colorNameDisplay = findViewById(R.id.displayColorName);
         showColor = findViewById(R.id.displayColor);
@@ -54,8 +54,12 @@ public class ColorIdentity extends AppCompatActivity {
         images.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                float x = event.getX();
+                float y = event.getY();
+
                 if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE){
                     bitmap = images.getDrawingCache();
+                    colorPointer.setVisibility(View.VISIBLE);
                     CheckColorName colorName = new CheckColorName();
                     int pixel = bitmap.getPixel((int)event.getX(), (int)event.getY());
 
@@ -67,7 +71,8 @@ public class ColorIdentity extends AppCompatActivity {
                     colorValuesDisplay.setText("RGB: " +r+ ", " +g+ ", " +b+ " \nHEX: " + hex);
                     String cName = colorName.getColorNameFromRgb(r,g,b);
                     colorNameDisplay.setText(cName);
-
+                    colorPointer.setX(x-60);
+                    colorPointer.setY(y+85);
                 }
                 return true;
             }
@@ -111,8 +116,15 @@ public class ColorIdentity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
+            //clear the images and drawableCache in ImageView
+            images.setImageBitmap(null);
+            images.destroyDrawingCache();
             //set image to image view
             images.setImageURI(data.getData());
+            colorValuesDisplay.setText("RGB: \nHEX: ");
+            colorNameDisplay.setText(null);
+            showColor.setBackgroundColor(Color.rgb(255,255,255));
+            colorPointer.setVisibility(View.INVISIBLE);
         }
     }
 }

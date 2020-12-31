@@ -3,7 +3,6 @@ package com.example.coloridentifierapplication.ColorIdentity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -12,15 +11,18 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.coloridentifierapplication.Camera.CheckColorName;
+import com.example.coloridentifierapplication.Camera.CameraActivity;
 import com.example.coloridentifierapplication.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
 
 
 public class ColorIdentity extends AppCompatActivity {
@@ -28,11 +30,16 @@ public class ColorIdentity extends AppCompatActivity {
     public static final int IMAGE_PICK_CODE = 101;
     public static final int STORAGE_PERMISSION_CODE = 102;
 
+    DatabaseHelper databaseHelper;
     ImageView images, colorPointer;
-    TextView colorValuesDisplay, colorNameDisplay;
+    TextView colorHexDisplay, colorRgbDisplay, colorNameDisplay;
     View showColor;
-    Button loadImages;
+    BottomNavigationView bottomNavigationView;
     Bitmap bitmap;
+
+    int r, g, b;
+    String hex, cName;
+    ArrayList<String> colorValues = new ArrayList<>();
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -41,13 +48,35 @@ public class ColorIdentity extends AppCompatActivity {
         setContentView(R.layout.activity_color_identity);
         images = findViewById(R.id.colorPicker);
         colorPointer = findViewById(R.id.colorPointer);
-        colorValuesDisplay = findViewById(R.id.displayColorValues);
-        colorNameDisplay = findViewById(R.id.displayColorName);
+        colorHexDisplay = findViewById(R.id.displayHexValues);
+        colorRgbDisplay = findViewById(R.id.displayRgbValues);
+        colorNameDisplay = findViewById(R.id.displayColorNameValues);
         showColor = findViewById(R.id.displayColor);
-        loadImages = findViewById(R.id.btn_loadImages);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Color Identity");
+        bottomNavigationView = findViewById(R.id.bottomColorMenu);
+        databaseHelper = new DatabaseHelper(this);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.loadPhoto:
+                        askStoragePermission();
+                        return true;
+
+                    case R.id.listOfSaveColor:
+                        Intent intent = new Intent(ColorIdentity.this, ListSaveColor.class);
+                        startActivity(intent);
+                        return true;
+
+                    case R.id.saveColor:
+                        AddColor();
+                        return true;
+
+                    default:
+                        return false;
+                }
+            }
+        });
 
         images.setDrawingCacheEnabled(true);
         images.buildDrawingCache(true);
@@ -63,13 +92,14 @@ public class ColorIdentity extends AppCompatActivity {
                     CheckColorName colorName = new CheckColorName();
                     int pixel = bitmap.getPixel((int)event.getX(), (int)event.getY());
 
-                    int r = Color.red(pixel);
-                    int g = Color.green(pixel);
-                    int b = Color.blue(pixel);
-                    String hex = "#"+Integer.toHexString(pixel);
+                    r = Color.red(pixel);
+                    g = Color.green(pixel);
+                    b = Color.blue(pixel);
+                    hex = String.format("#%02X%02X%02X", r, g, b);
                     showColor.setBackgroundColor(Color.rgb(r,g,b));
-                    colorValuesDisplay.setText("RGB: " +r+ ", " +g+ ", " +b+ " \nHEX: " + hex);
-                    String cName = colorName.getColorNameFromRgb(r,g,b);
+                    colorHexDisplay.setText(hex);
+                    cName = colorName.getColorNameFromRgb(r,g,b);
+                    colorRgbDisplay.setText(r+ ", " +g+ ", " +b);
                     colorNameDisplay.setText(cName);
                     colorPointer.setX(x-60);
                     colorPointer.setY(y+85);
@@ -77,10 +107,6 @@ public class ColorIdentity extends AppCompatActivity {
                 return true;
             }
         });
-    }
-
-    public void btn_loadImages(View view) {
-        askStoragePermission();
     }
 
     private void pickImagesFromGallery() {
@@ -121,10 +147,29 @@ public class ColorIdentity extends AppCompatActivity {
             images.destroyDrawingCache();
             //set image to image view
             images.setImageURI(data.getData());
-            colorValuesDisplay.setText("RGB: \nHEX: ");
+            colorHexDisplay.setText(null);
+            colorRgbDisplay.setText(null);
             colorNameDisplay.setText(null);
             showColor.setBackgroundColor(Color.rgb(255,255,255));
             colorPointer.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void AddColor(){
+        if(colorHexDisplay.getText().toString().trim().length()!= 0 ||
+                colorRgbDisplay.getText().toString().trim().length()!= 0 ||
+                colorNameDisplay.getText().toString().trim().length()!= 0 ){
+            Boolean x = databaseHelper.findColor(colorHexDisplay.getText().toString().trim());
+            if(!x){
+                Toast.makeText(this,"Color already exist.", Toast.LENGTH_SHORT).show();
+            }else{
+                databaseHelper.addColor(new com.example.coloridentifierapplication.ColorIdentity.Color(colorNameDisplay.getText().toString(),
+                        colorRgbDisplay.getText().toString(),
+                        colorHexDisplay.getText().toString()));
+                Toast.makeText(this,"Color save success.", Toast.LENGTH_SHORT).show();
+            }
+        }else{
+            Toast.makeText(this,"No color is select.", Toast.LENGTH_SHORT).show();
         }
     }
 }

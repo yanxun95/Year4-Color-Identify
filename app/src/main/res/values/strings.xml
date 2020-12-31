@@ -4,4 +4,6 @@
     <string name="btm_retake_picture">Retake Picture</string>
     <string name="btn_check_color">Check Color</string>
     <string name="btn_gallery">Gallery</string>
+    <string name="tvHex">HEX:\u0020</string>
+    <string name="tvRgb">RGB:\u0020</string>
 </resources>

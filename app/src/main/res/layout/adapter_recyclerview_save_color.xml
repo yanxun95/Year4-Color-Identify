@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:background="@drawable/bottom_border"
+    android:gravity="center">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/border"
+        android:layout_centerVertical="true">
+
+        <View
+            android:id="@+id/recyclerViewDisplayColor"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/recyclerViewColorName"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/constraintLayout"
+        android:paddingStart="10dp"
+        android:paddingBottom="1dp"
+        android:text="Color name: "
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/recyclerViewRgb"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recyclerViewColorName"
+        android:layout_toEndOf="@id/constraintLayout"
+        android:paddingStart="10dp"
+        android:paddingBottom="1dp"
+        android:text="RGB: "
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/recyclerViewHex"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recyclerViewRgb"
+        android:layout_toEndOf="@id/constraintLayout"
+        android:paddingStart="10dp"
+        android:paddingBottom="1dp"
+        android:text="Hex: "
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/recyclerViewOption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_baseline_more_vert_24"
+        android:layout_toEndOf="@id/recyclerViewRgb"/>
+
+</RelativeLayout>

@@ -62,10 +62,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void deleteColor(Color color) {
+    public boolean deleteColor(Color color) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_COLOR, COLUMN_ID + " = ?", new String[] {color.getId()});
+        int nrows = db.delete(TABLE_COLOR, COLUMN_ID + " = ?", new String[] {color.getId()});
         db.close();
+        return nrows != 0;
     }
 
     private Color cursorToColor(Cursor cursor)

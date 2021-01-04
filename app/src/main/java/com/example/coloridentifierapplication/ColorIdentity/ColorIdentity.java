@@ -130,7 +130,6 @@ public class ColorIdentity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(requestCode == STORAGE_PERMISSION_CODE){
             if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                //Toast.makeText(this, "try to run camera.", Toast.LENGTH_SHORT).show();
                 pickImagesFromGallery();
             }else {
                 Toast.makeText(this, "Permission denied!.", Toast.LENGTH_SHORT).show();

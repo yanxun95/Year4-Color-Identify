@@ -112,7 +112,7 @@ public class ColorSaveRecyclerAdapter extends RecyclerView.Adapter<ColorSaveRecy
         return name.size();
     }
 
-    public void deleteColor(int position){
+    private void deleteColor(int position){
         databaseHelper = new DatabaseHelper(inflater.getContext());
         databaseHelper.deleteColor(new Color(id.get(position).trim()));
         id.remove(position);
@@ -122,7 +122,7 @@ public class ColorSaveRecyclerAdapter extends RecyclerView.Adapter<ColorSaveRecy
         colorSaveRecyclerAdapter.notifyDataSetChanged();
     }
 
-    public void copyName(int position){
+    private void copyName(int position){
         String x = name.get(position);
         ClipboardManager clipboard = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("color", x);
@@ -130,7 +130,7 @@ public class ColorSaveRecyclerAdapter extends RecyclerView.Adapter<ColorSaveRecy
         Toast.makeText(context, x + " has copy to the clipboard", Toast.LENGTH_SHORT).show();
     }
 
-    public void copyRgb(int position){
+    private void copyRgb(int position){
         String y = rgb.get(position);
         ClipboardManager clipboard = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("color", y);
@@ -138,7 +138,7 @@ public class ColorSaveRecyclerAdapter extends RecyclerView.Adapter<ColorSaveRecy
         Toast.makeText(context, y + " has copy to the clipboard", Toast.LENGTH_SHORT).show();
     }
 
-    public void copyHex(int position){
+    private void copyHex(int position){
         String z = hex.get(position);
         ClipboardManager clipboard = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("color", z);

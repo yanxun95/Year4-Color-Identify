@@ -69,7 +69,7 @@ public class ColorIdentity extends AppCompatActivity {
                         return true;
 
                     case R.id.saveColor:
-                        AddColor();
+                        addColor();
                         return true;
 
                     default:
@@ -115,7 +115,7 @@ public class ColorIdentity extends AppCompatActivity {
         startActivityForResult(intent, IMAGE_PICK_CODE);
     }
 
-    public void askStoragePermission(){
+    private void askStoragePermission(){
         if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
             //permission is not granted, request it
             String[] permission = {Manifest.permission.READ_EXTERNAL_STORAGE};
@@ -154,7 +154,7 @@ public class ColorIdentity extends AppCompatActivity {
         }
     }
 
-    public void AddColor(){
+    private void addColor(){
         if(colorHexDisplay.getText().toString().trim().length()!= 0 ||
                 colorRgbDisplay.getText().toString().trim().length()!= 0 ||
                 colorNameDisplay.getText().toString().trim().length()!= 0 ){

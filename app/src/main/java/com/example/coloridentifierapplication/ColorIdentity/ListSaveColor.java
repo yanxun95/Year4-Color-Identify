@@ -39,6 +39,15 @@ public class ListSaveColor extends AppCompatActivity {
         setContentView(R.layout.activity_list_save_color);
         databaseHelper = new DatabaseHelper(this);
         recyclerView = findViewById(R.id.colorListView);
+        displayAllSavedColor();
+
+        colorSaveRecyclerAdapter = new ColorSaveRecyclerAdapter(this, id, name, rgb, hex);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(colorSaveRecyclerAdapter);
+    }
+
+    private void displayAllSavedColor(){
         colorList = databaseHelper.getAllData();
         colorArrayList = databaseHelper.findAllColors();
         if(colorArrayList.isEmpty()) {
@@ -56,10 +65,5 @@ public class ListSaveColor extends AppCompatActivity {
             rgb.add(color.getRgb());
             hex.add(color.getHex());
         }
-
-        colorSaveRecyclerAdapter = new ColorSaveRecyclerAdapter(this, id, name, rgb, hex);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(colorSaveRecyclerAdapter);
     }
 }

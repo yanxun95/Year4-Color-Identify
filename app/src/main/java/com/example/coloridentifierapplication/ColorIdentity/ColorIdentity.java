@@ -39,7 +39,6 @@ public class ColorIdentity extends AppCompatActivity {
 
     int r, g, b;
     String hex, cName;
-    ArrayList<String> colorValues = new ArrayList<>();
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -102,7 +101,7 @@ public class ColorIdentity extends AppCompatActivity {
                     colorRgbDisplay.setText(r+ ", " +g+ ", " +b);
                     colorNameDisplay.setText(cName);
                     colorPointer.setX(x-60);
-                    colorPointer.setY(y+85);
+                    colorPointer.setY(y+100);
                 }
                 return true;
             }

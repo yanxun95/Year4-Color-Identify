@@ -4,11 +4,9 @@
     package="com.example.coloridentifierapplication">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-
 
     <application
         android:allowBackup="true"
@@ -18,11 +16,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ColorIdentifierApplication">
-        <activity android:name=".ColorIdentity.ListSaveColor"></activity>
+        <activity android:name=".Camera.CameraActivity"></activity>
+        <activity android:name=".ColorIdentity.ListSaveColor" />
         <activity android:name=".Fashion.Fashion" />
         <activity android:name=".ColorIdentity.ColorIdentity" />
         <activity android:name=".ColorBlindTest.ColorBlindTest" />
-        <activity android:name=".Camera.CameraActivity" />
         <activity android:name=".Menu.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

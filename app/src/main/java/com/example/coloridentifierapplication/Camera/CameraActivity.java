@@ -1,60 +1,63 @@
 package com.example.coloridentifierapplication.Camera;
 
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.camera.core.Camera;
-import androidx.camera.core.CameraSelector;
-import androidx.camera.core.ImageAnalysis;
-import androidx.camera.core.ImageCapture;
-import androidx.camera.core.ImageCaptureException;
-import androidx.camera.core.Preview;
-import androidx.camera.extensions.HdrImageCaptureExtender;
-import androidx.camera.lifecycle.ProcessCameraProvider;
-import androidx.camera.view.PreviewView;
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleOwner;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
+import android.content.Context;
 import android.content.pm.PackageManager;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.ImageFormat;
+import android.graphics.Matrix;
+import android.graphics.Point;
+import android.graphics.Rect;
+import android.graphics.YuvImage;
+import android.graphics.drawable.BitmapDrawable;
+import android.hardware.Camera;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicYuvToRGB;
+import android.renderscript.Type;
 import android.util.Log;
+import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.example.coloridentifierapplication.Menu.MainActivity;
+import com.example.coloridentifierapplication.ColorIdentity.CheckColorName;
 import com.example.coloridentifierapplication.R;
-import com.google.common.util.concurrent.ListenableFuture;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Locale;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
+import java.io.ByteArrayOutputStream;
+import java.util.List;
 
 public class CameraActivity extends AppCompatActivity {
 
     public static final int CAMERA_REQUEST_CODE = 101;
-    private Executor executor = Executors.newSingleThreadExecutor();
-    PreviewView previewView;
+    Camera camera;
+    FrameLayout frameLayout;
+    ShowCamera showCamera;
+    View viewDisplayColor;
+    TextView viewName, viewRgb, viewHex;
+    String hex, cName;
+    private static final String TAG = "CameraActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_camare);
-        previewView = findViewById(R.id.cameraView);
+        setContentView(R.layout.activity_camera);
+        frameLayout = findViewById(R.id.frameLayout);
+        viewDisplayColor = findViewById(R.id.cameraLiveDisplayColor);
+        viewName = findViewById(R.id.cameraLiveColorName);
+        viewRgb = findViewById(R.id.cameraLiveRGB);
+        viewHex = findViewById(R.id.cameraLiveHex);
         askCameraPermissions();
     }
 
@@ -80,54 +83,102 @@ public class CameraActivity extends AppCompatActivity {
         }
     }
 
-    private void startCamera() {
+    public void startCamera(){
+        camera = Camera.open();
+        showCamera = new ShowCamera(this, camera);
+        frameLayout.addView(showCamera);
 
-        final ListenableFuture<ProcessCameraProvider> cameraProviderFuture = ProcessCameraProvider.getInstance(this);
-
-        cameraProviderFuture.addListener(new Runnable() {
+        camera.setPreviewCallback(new Camera.PreviewCallback() {
             @Override
-            public void run() {
-                try {
+            public void onPreviewFrame(byte[] bytes, Camera camera) {
+                int frameWidth = camera.getParameters().getPreviewSize().width;
+                int frameHeight = camera.getParameters().getPreviewSize().height;
 
-                    ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-                    bindPreview(cameraProvider);
+                //number of pixels//transforms NV21 pixel data into RGB pixels
+                int rgb[] = new int[frameWidth * frameHeight];
+                // convertion
+                decodeYUV420SP(rgb, bytes, frameWidth, frameHeight);
+                Bitmap bmp = Bitmap.createBitmap(rgb, frameWidth, frameHeight, Bitmap.Config.ARGB_8888);
+                Matrix matrix = new Matrix();
+                matrix.postRotate(90);
+                Bitmap rotatedBitmap = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
 
-                } catch (ExecutionException | InterruptedException e) {
-                    // No errors need to be handled for this Future.
-                    // This should never be reached.
+                int width1 = rotatedBitmap.getWidth();
+                int height1 = rotatedBitmap.getHeight();
+                System.out.println("This is rotatedBitmap width: "+width1);
+                System.out.println("This is rotatedBitmap height "+height1);
+
+                int x = (rotatedBitmap.getWidth()/2) - 5;
+                int y = (rotatedBitmap.getHeight()/2) - 5;
+                System.out.println("This is rotatedBitmap/2 x: "+x);
+                System.out.println("This is rotatedBitmap/2 y "+y);
+
+                int redColors = 0;
+                int greenColors = 0;
+                int blueColors = 0;
+                int pixelCount = 0;
+
+                for (int i = y; i < (y+10); i++) {
+                    for (int j = x; j < (x+10); j++) {
+                        int pixel = rotatedBitmap.getPixel(x,y);
+                        pixelCount++;
+                        redColors += Color.red(pixel);
+                        greenColors += Color.green(pixel);
+                        blueColors += Color.blue(pixel);
+                    }
                 }
+
+                int r = (redColors/pixelCount);
+                int g = (greenColors/pixelCount);
+                int b = (blueColors/pixelCount);
+
+                CheckColorName colorName =  new CheckColorName();
+                hex = String.format("#%02X%02X%02X", r, g, b);
+                viewDisplayColor.setBackgroundColor(Color.rgb(r,g,b));
+                viewHex.setText(hex);
+                cName = colorName.getColorNameFromRgb(r,g,b);
+                viewRgb.setText(r+ ", " +g+ ", " +b);
+                viewName.setText(cName);
             }
-        }, ContextCompat.getMainExecutor(this));
+        });
     }
 
-    void bindPreview(@NonNull ProcessCameraProvider cameraProvider) {
 
-        Preview preview = new Preview.Builder()
-                .build();
+    public void decodeYUV420SP(int[] rgb, byte[] yuv420sp, int width, int height) {
+        final int frameSize = width * height;
 
-        CameraSelector cameraSelector = new CameraSelector.Builder()
-                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-                .build();
+        for (int j = 0, yp = 0; j < height; j++) {
+            int uvp = frameSize + (j >> 1) * width, u = 0, v = 0;
+            for (int i = 0; i < width; i++, yp++) {
+                int y = (0xff & ((int) yuv420sp[yp])) - 16;
+                if (y < 0)
+                    y = 0;
+                if ((i & 1) == 0) {
+                    v = (0xff & yuv420sp[uvp++]) - 128;
+                    u = (0xff & yuv420sp[uvp++]) - 128;
+                }
 
-        ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
-                .build();
+                int y1192 = 1192 * y;
+                int r = (y1192 + 1634 * v);
+                int g = (y1192 - 833 * v - 400 * u);
+                int b = (y1192 + 2066 * u);
 
-        ImageCapture.Builder builder = new ImageCapture.Builder();
+                if (r < 0)
+                    r = 0;
+                else if (r > 262143)
+                    r = 262143;
+                if (g < 0)
+                    g = 0;
+                else if (g > 262143)
+                    g = 262143;
+                if (b < 0)
+                    b = 0;
+                else if (b > 262143)
+                    b = 262143;
 
-        //Vendor-Extensions (The CameraX extensions dependency in build.gradle)
-        HdrImageCaptureExtender hdrImageCaptureExtender = HdrImageCaptureExtender.create(builder);
-
-//        // Query if extension is available (optional).
-//        if (hdrImageCaptureExtender.isExtensionAvailable(cameraSelector)) {
-//            // Enable the extension if available.
-//            hdrImageCaptureExtender.enableExtension(cameraSelector);
-//        }
-
-        final ImageCapture imageCapture = builder
-                .setTargetRotation(this.getWindowManager().getDefaultDisplay().getRotation())
-                .build();
-        preview.setSurfaceProvider(previewView.getSurfaceProvider());
-        Camera camera = cameraProvider.bindToLifecycle((LifecycleOwner)this, cameraSelector, preview, imageAnalysis, imageCapture);
-
+                rgb[yp] = 0xff000000 | ((r << 6) & 0xff0000) | ((g >> 2) & 0xff00) | ((b >> 10) & 0xff);
+            }
+        }
     }
+
 }

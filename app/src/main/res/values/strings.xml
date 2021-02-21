@@ -6,4 +6,5 @@
     <string name="btn_gallery">Gallery</string>
     <string name="tvHex">HEX:\u0020</string>
     <string name="tvRgb">RGB:\u0020</string>
+    <string name="btnLiveCameraColorIdentity">Get Color</string>
 </resources>

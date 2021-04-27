@@ -164,16 +164,16 @@ public class ColorBlindTest extends AppCompatActivity {
                 startActivity(intent);
             }
         }else if(userInput.isEmpty()){
-            Toast.makeText(this, "Please enter the number in the picture!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter the number in the picture.", Toast.LENGTH_SHORT).show();
         }else{
-            Toast.makeText(this, "Please check the answer before going to next test!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please check the answer before going to next test.", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void functionShowAnswer() {
         userInput = inputAnswer.getText().toString();
         if(userInput.isEmpty()){
-            Toast.makeText(this, "Please enter the number in the picture!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter the number in the picture.", Toast.LENGTH_SHORT).show();
         }else{
             checkAnswer();
         }

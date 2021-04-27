@@ -56,7 +56,9 @@
         android:layout_below="@id/tvSendEmailDes"
         android:layout_marginTop="2dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginEnd="2dp"/>
+        android:layout_marginEnd="2dp"
+        android:inputType="text"
+        tools:ignore="TextFields" />
 
     <Button
         android:layout_width="100dp"

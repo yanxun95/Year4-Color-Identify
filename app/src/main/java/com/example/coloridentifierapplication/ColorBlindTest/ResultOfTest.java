@@ -39,6 +39,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -95,16 +96,21 @@ public class ResultOfTest extends AppCompatActivity {
     }
 
     private void sendEmail() {
-        if(pdfExist){
-            String mEmail = inputEmail.getText().toString().trim();
+        String mEmail = inputEmail.getText().toString().trim();
+        if(mEmail.isEmpty()){
+            Toast.makeText(this, "Please enter the email address.", Toast.LENGTH_SHORT).show();
+        }else if(isValid(mEmail)){
             String mSubject = "Result of ishihara color blind test";
             String mMessage = textSendToEmail;
-
-            JavaMailAPI javaMailAPI = new JavaMailAPI(this, mEmail, mSubject, mMessage);
-            javaMailAPI.execute();
+            if(pdfExist){
+                JavaMailAPI javaMailAPI = new JavaMailAPI(this, mEmail, mSubject, mMessage);
+                javaMailAPI.execute();
+            }else{
+                createPDF();
+                sendEmail();
+            }
         }else{
-            createPDF();
-            sendEmail();
+            Toast.makeText(this, "Please enter a valid email address.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -133,5 +139,17 @@ public class ResultOfTest extends AppCompatActivity {
         }
         myPdfDocument.close();
         pdfExist = true;
+    }
+
+    public boolean isValid(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+                "[a-zA-Z0-9_+&*-]+)*@" +
+                "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+                "A-Z]{2,7}$";
+
+        Pattern pat = Pattern.compile(emailRegex);
+        if (email == null)
+            return false;
+        return pat.matcher(email).matches();
     }
 }

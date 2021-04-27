@@ -126,7 +126,7 @@ public class ColorSaveRecyclerAdapter extends RecyclerView.Adapter<ColorSaveRecy
         ClipboardManager clipboard = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("color", x);
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(context, x + " has copy to the clipboard", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, x + " has copy to the clipboard.", Toast.LENGTH_SHORT).show();
     }
 
     private void copyRgb(int position){
@@ -134,7 +134,7 @@ public class ColorSaveRecyclerAdapter extends RecyclerView.Adapter<ColorSaveRecy
         ClipboardManager clipboard = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("color", y);
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(context, y + " has copy to the clipboard", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, y + " has copy to the clipboard.", Toast.LENGTH_SHORT).show();
     }
 
     private void copyHex(int position){
@@ -142,6 +142,6 @@ public class ColorSaveRecyclerAdapter extends RecyclerView.Adapter<ColorSaveRecy
         ClipboardManager clipboard = (ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("color", z);
         clipboard.setPrimaryClip(clip);
-        Toast.makeText(context, z + " has copy to the clipboard", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, z + " has copy to the clipboard.", Toast.LENGTH_SHORT).show();
     }
 }

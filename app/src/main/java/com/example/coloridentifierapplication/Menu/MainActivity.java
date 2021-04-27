@@ -34,14 +34,12 @@ public class MainActivity extends AppCompatActivity {
         titles = new ArrayList<>();
         images = new ArrayList<>();
 
-        titles.add("Take a picture");
+        titles.add("Camera");
         titles.add("Color identity");
-        titles.add("Fashion advice");
         titles.add("Color blind test");
 
         images.add(R.drawable.ic_baseline_photo_camera_24);
         images.add(R.drawable.ic_baseline_colorize_24);
-        images.add(R.drawable.ic_baseline_whatshot_24);
         images.add(R.drawable.ic_baseline_remove_red_eye_24);
 
         adapter = new Adapter(this,titles,images);

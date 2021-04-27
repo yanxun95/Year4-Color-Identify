@@ -1,4 +1,4 @@
-package com.example.coloridentifierapplication.ColorIdentity;
+package com.example.coloridentifierapplication.Color;
 
 import java.util.ArrayList;
 

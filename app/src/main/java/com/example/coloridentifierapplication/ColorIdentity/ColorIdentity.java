@@ -18,11 +18,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.coloridentifierapplication.Camera.CameraActivity;
+import com.example.coloridentifierapplication.Color.CheckColorName;
 import com.example.coloridentifierapplication.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.ArrayList;
 
 
 public class ColorIdentity extends AppCompatActivity {
@@ -161,7 +159,7 @@ public class ColorIdentity extends AppCompatActivity {
             if(!x){
                 Toast.makeText(this,"Color already exist.", Toast.LENGTH_SHORT).show();
             }else{
-                databaseHelper.addColor(new com.example.coloridentifierapplication.ColorIdentity.Color(colorNameDisplay.getText().toString(),
+                databaseHelper.addColor(new com.example.coloridentifierapplication.Color.Color(colorNameDisplay.getText().toString(),
                         colorRgbDisplay.getText().toString(),
                         colorHexDisplay.getText().toString()));
                 Toast.makeText(this,"Color save success.", Toast.LENGTH_SHORT).show();

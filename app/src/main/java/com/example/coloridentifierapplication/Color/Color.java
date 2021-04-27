@@ -1,4 +1,4 @@
-package com.example.coloridentifierapplication.ColorIdentity;
+package com.example.coloridentifierapplication.Color;
 
 public class Color {
 

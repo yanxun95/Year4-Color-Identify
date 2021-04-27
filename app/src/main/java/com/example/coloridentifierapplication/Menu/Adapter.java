@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.coloridentifierapplication.Camera.CameraActivity;
 import com.example.coloridentifierapplication.ColorBlindTest.ColorBlindTest;
 import com.example.coloridentifierapplication.ColorIdentity.ColorIdentity;
-import com.example.coloridentifierapplication.Fashion.Fashion;
 import com.example.coloridentifierapplication.R;
 
 import java.util.List;
@@ -69,8 +68,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                     }else if(position.equals(1)){
                         intent = new Intent(v.getContext(), ColorIdentity.class);
                     }else if(position.equals(2)){
-                        intent = new Intent(v.getContext(), Fashion.class);
-                    }else if(position.equals(3)){
                         intent = new Intent(v.getContext(), ColorBlindTest.class);
                     }
                     v.getContext().startActivity(intent);

@@ -4,39 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.ImageFormat;
 import android.graphics.Matrix;
-import android.graphics.Point;
-import android.graphics.Rect;
-import android.graphics.YuvImage;
-import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.renderscript.Allocation;
-import android.renderscript.Element;
-import android.renderscript.RenderScript;
-import android.renderscript.ScriptIntrinsicYuvToRGB;
-import android.renderscript.Type;
-import android.util.Log;
-import android.view.Display;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.coloridentifierapplication.ColorIdentity.CheckColorName;
+import com.example.coloridentifierapplication.Color.CheckColorName;
 import com.example.coloridentifierapplication.R;
-
-import java.io.ByteArrayOutputStream;
-import java.util.List;
 
 public class CameraActivity extends AppCompatActivity {
 
@@ -83,7 +62,7 @@ public class CameraActivity extends AppCompatActivity {
         }
     }
 
-    public void startCamera(){
+    private void startCamera(){
         camera = Camera.open();
         showCamera = new ShowCamera(this, camera);
         frameLayout.addView(showCamera);
@@ -95,7 +74,7 @@ public class CameraActivity extends AppCompatActivity {
                 int frameHeight = camera.getParameters().getPreviewSize().height;
 
                 //number of pixels//transforms NV21 pixel data into RGB pixels
-                int rgb[] = new int[frameWidth * frameHeight];
+                int[] rgb = new int[frameWidth * frameHeight];
                 // convertion
                 decodeYUV420SP(rgb, bytes, frameWidth, frameHeight);
                 Bitmap bmp = Bitmap.createBitmap(rgb, frameWidth, frameHeight, Bitmap.Config.ARGB_8888);
@@ -103,15 +82,8 @@ public class CameraActivity extends AppCompatActivity {
                 matrix.postRotate(90);
                 Bitmap rotatedBitmap = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
 
-                int width1 = rotatedBitmap.getWidth();
-                int height1 = rotatedBitmap.getHeight();
-                System.out.println("This is rotatedBitmap width: "+width1);
-                System.out.println("This is rotatedBitmap height "+height1);
-
                 int x = (rotatedBitmap.getWidth()/2) - 5;
                 int y = (rotatedBitmap.getHeight()/2) - 5;
-                System.out.println("This is rotatedBitmap/2 x: "+x);
-                System.out.println("This is rotatedBitmap/2 y "+y);
 
                 int redColors = 0;
                 int greenColors = 0;
@@ -144,7 +116,7 @@ public class CameraActivity extends AppCompatActivity {
     }
 
 
-    public void decodeYUV420SP(int[] rgb, byte[] yuv420sp, int width, int height) {
+    private void decodeYUV420SP(int[] rgb, byte[] yuv420sp, int width, int height) {
         final int frameSize = width * height;
 
         for (int j = 0, yp = 0; j < height; j++) {

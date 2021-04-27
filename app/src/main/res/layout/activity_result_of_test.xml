@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ColorBlindTest.ResultOfTest">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTitle"
+        android:textStyle="bold"
+        android:text="@string/tvTestTitle"
+        android:textSize="25sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTestResult"
+        android:textSize="20sp"
+        android:text="@string/tvTestResult"
+        android:layout_below="@id/tvTitle"
+        android:layout_marginTop="80dp"
+        android:textColor="@color/black"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvScore"
+        android:textSize="20sp"
+        android:layout_below="@id/tvTestResult"
+        android:layout_marginTop="50dp"
+        android:textColor="@color/black"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvSendEmailDes"
+        android:layout_below="@id/tvScore"
+        android:text="@string/tvSendEmail"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"/>
+
+    <EditText
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/inputEmail"
+        android:layout_below="@id/tvSendEmailDes"
+        android:layout_marginTop="2dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="2dp"/>
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnSendEmail"
+        android:text="@string/btnEmail"
+        android:layout_below="@id/inputEmail"
+        android:layout_marginTop="5dp"
+        android:layout_toStartOf="@+id/btnPDF"
+        android:layout_marginEnd="5dp"
+        android:onClick="btnSendEmail"/>
+
+    <Button
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnPDF"
+        android:text="@string/btnPDF"
+        android:layout_below="@id/inputEmail"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:onClick="btnDownloadPDF"/>
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnMenu"
+        android:text="@string/btnMenu"
+        android:layout_below="@id/inputEmail"
+        android:layout_toEndOf="@+id/btnPDF"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="5dp"
+        android:onClick="btnBackToMenu"/>
+
+
+</RelativeLayout>

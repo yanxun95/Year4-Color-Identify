@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -16,9 +17,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ColorIdentifierApplication">
-        <activity android:name=".Camera.CameraActivity"></activity>
+        <activity android:name=".ColorBlindTest.ResultOfTest"></activity>
+        <activity android:name=".Camera.CameraActivity" />
         <activity android:name=".ColorIdentity.ListSaveColor" />
-        <activity android:name=".Fashion.Fashion" />
         <activity android:name=".ColorIdentity.ColorIdentity" />
         <activity android:name=".ColorBlindTest.ColorBlindTest" />
         <activity android:name=".Menu.MainActivity">
@@ -39,5 +40,4 @@
                 android:resource="@xml/file_paths" />
         </provider>
     </application>
-
 </manifest>

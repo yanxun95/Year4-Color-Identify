@@ -7,4 +7,17 @@
     <string name="tvHex">HEX:\u0020</string>
     <string name="tvRgb">RGB:\u0020</string>
     <string name="btnLiveCameraColorIdentity">Get Color</string>
+    <string name="tvAnswer">What number do you see? </string>
+    <string name="tvNoAnswer">No number seen? Enter a \"-\": </string>
+    <string name="displayAnswer">Answer: </string>
+    <string name="numberOfTest">1/12</string>
+    <string name="btnShowAnswer">Show answer</string>
+    <string name="btnNext">Next</string>
+    <string name="correctAnswer">Correct Answer!</string>
+    <string name="tvTestTitle">Ishihara color blind test result</string>
+    <string name="tvTestResult">Your score is:</string>
+    <string name="tvSendEmail">Enter your email for us to send you the result:</string>
+    <string name="btnEmail">Send the Email</string>
+    <string name="btnPDF">Download the result</string>
+    <string name="btnMenu">Back To Menu</string>
 </resources>

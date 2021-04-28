@@ -26,6 +26,7 @@ public class ColorBlindTest extends AppCompatActivity {
     ImageView colorBlindTestImg;
     EditText inputAnswer;
     Button btnShowAnswer, btnNext;
+
     List<String> images = new ArrayList<>();
     List<String> description = new ArrayList<>();
     List<String> answer = new ArrayList<>();
@@ -33,9 +34,9 @@ public class ColorBlindTest extends AppCompatActivity {
     List<Integer> listRandomSequence;
 
     int currentTest = 1;
+    int correctAnswer = 0;
     String userInput = "";
     Boolean goToNextPage = false;
-    int correctAnswer = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,17 +132,14 @@ public class ColorBlindTest extends AppCompatActivity {
     }
 
     private void initialRandomSequence(){
-        //For random numbers in Java, create a Random class object −
         Random randNum = new Random();
-        //create a HashSet to get only the unique elements i.e. no duplicates −
-        //Generate random numbers with Random class nextInt −
         while (randomSequence.size() < 12) {
             randomSequence.add(randNum.nextInt(25)+1);
         }
         listRandomSequence = new ArrayList<>(randomSequence);
     }
 
-    public void functionNext() {
+    private void functionNext() {
         userInput = inputAnswer.getText().toString();
         if(goToNextPage){
             inputAnswer.getText().clear();
@@ -170,7 +168,7 @@ public class ColorBlindTest extends AppCompatActivity {
         }
     }
 
-    public void functionShowAnswer() {
+    private void functionShowAnswer() {
         userInput = inputAnswer.getText().toString();
         if(userInput.isEmpty()){
             Toast.makeText(this, "Please enter the number in the picture.", Toast.LENGTH_SHORT).show();
@@ -182,9 +180,6 @@ public class ColorBlindTest extends AppCompatActivity {
     private void checkAnswer() {
         int x = listRandomSequence.get(currentTest-1);
         String compareAnswer = answer.get(x-1);
-//        System.out.println("This is x: " + x);
-//        System.out.println("This is compareAnswer: " + compareAnswer);
-//        System.out.println("This is user input: " + userInput);
         if(userInput.equals(compareAnswer)){
             correctAnswer++;
             System.out.println("Mark: " + correctAnswer);

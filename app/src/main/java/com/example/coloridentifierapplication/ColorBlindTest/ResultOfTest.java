@@ -141,7 +141,7 @@ public class ResultOfTest extends AppCompatActivity {
         pdfExist = true;
     }
 
-    public boolean isValid(String email) {
+    private boolean isValid(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
                 "[a-zA-Z0-9_+&*-]+)*@" +
                 "(?:[a-zA-Z0-9-]+\\.)+[a-z" +

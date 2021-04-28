@@ -68,7 +68,6 @@ public class JavaMailAPI extends AsyncTask<Void,Void,Void>  {
                 });
 
         try {
-
             Message message = new MimeMessage(mSession);
             message.setFrom(new InternetAddress(Utils.EMAIL));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(mEmail));
